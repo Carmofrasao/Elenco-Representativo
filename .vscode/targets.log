@@ -1,5 +1,5 @@
 make all --print-data-base --no-builtin-variables --no-builtin-rules --question
-make: *** No rule to make target 'elenco.o', needed by 'elenco'.  Stop.
+make: *** No rule to make target 'all'.  Stop.
 
 # GNU Make 4.2.1
 # Built for x86_64-pc-linux-gnu
@@ -8,7 +8,7 @@ make: *** No rule to make target 'elenco.o', needed by 'elenco'.  Stop.
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Sun Aug 21 00:09:52 2022
+# Make data base, printed on Sun Aug 21 00:32:47 2022
 
 # Variables
 
@@ -52,14 +52,12 @@ VTE_VERSION = 6003
 VSCODE_NLS_CONFIG = {"locale":"pt-br","availableLanguages":{"*":"pt-br"},"_languagePackId":"8e7a008e83c664b9876a8f72ff0490ae.pt-br","_translationsConfigFile":"/home/anderson/.config/Code/clp/8e7a008e83c664b9876a8f72ff0490ae.pt-br/tcf.json","_cacheRoot":"/home/anderson/.config/Code/clp/8e7a008e83c664b9876a8f72ff0490ae.pt-br","_resolvedLanguagePackCoreLocation":"/home/anderson/.config/Code/clp/8e7a008e83c664b9876a8f72ff0490ae.pt-br/e4503b30fc78200f846c62cf8091b76ff5547662","_corruptedFile":"/home/anderson/.config/Code/clp/8e7a008e83c664b9876a8f72ff0490ae.pt-br/corrupted.info","_languagePackSupport":true}
 # environment
 _ = /usr/bin/code
-# makefile (from 'Makefile', line 4)
-CFLAGS = -Wall -g
 # environment
 XDG_CONFIG_DIRS = /etc/xdg/xdg-cinnamon:/etc/xdg
 # environment
 GTK_OVERLAY_SCROLLING = 1
-# makefile (from 'Makefile', line 1)
-MAKEFILE_LIST :=  Makefile
+# makefile
+MAKEFILE_LIST := 
 # automatic
 @F = $(notdir $@)
 # 'override' directive
@@ -162,19 +160,18 @@ MAKE = $(MAKE_COMMAND)
 MAKECMDGOALS := all
 # environment
 SHLVL = 1
-# makefile (from 'Makefile', line 5)
-CC = gcc 
 # environment
 XDG_SESSION_ID = c2
 # environment
 USER = anderson
 # makefile
-.DEFAULT_GOAL := all
+.DEFAULT_GOAL := 
 # environment
 XDG_CURRENT_DESKTOP = X-Cinnamon
 # environment
 LIBVIRT_DEFAULT_URI = qemu:///system
 # automatic
+ 
 %D = $(patsubst %/,%,$(dir $%))
 # default
 MAKE_COMMAND := make
@@ -243,7 +240,7 @@ TERM = xterm-256color
 # environment
 VSCODE_PID = 44253
 # variable set hash-table stats:
-# Load=115/1024=11%, Rehash=0, Collisions=12/140=9%
+# Load=113/1024=11%, Rehash=0, Collisions=12/135=9%
 
 # Pattern-specific Variable Values
 
@@ -251,10 +248,9 @@ VSCODE_PID = 44253
 
 # Directories
 
-# . (device 2050, inode 59637814): 6 files, no impossibilities.
+# . (device 2050, inode 59637814): 5 files, no impossibilities.
 
-# 6 files, no impossibilities in 1 directories.
- 
+# 5 files, no impossibilities in 1 directories.
 
 # Implicit Rules
 
@@ -262,7 +258,8 @@ VSCODE_PID = 44253
 
 # Files
 
-all: elenco
+# Not a target:
+all:
 #  Command line target.
 #  Implicit rule search has been done.
 #  File does not exist.
@@ -271,21 +268,16 @@ all: elenco
 # Not a target:
 Makefile:
 #  Implicit rule search has been done.
-#  Last modified 2022-08-21 00:09:50.513172111
+#  File does not exist.
 #  File has been updated.
-#  Successfully updated.
+#  Failed to be updated.
 
-elenco: elenco.o
+# Not a target:
+makefile:
 #  Implicit rule search has been done.
 #  File does not exist.
-#  File has not been updated.
-
-purge:
-#  Implicit rule search has not been done.
-#  Modification time never checked.
-#  File has not been updated.
-#  recipe to execute (from 'Makefile', line 24):
-	$(RM) elenco *.o
+#  File has been updated.
+#  Failed to be updated.
 
 # Not a target:
 .DEFAULT:
@@ -294,39 +286,26 @@ purge:
 #  File has not been updated.
 
 # Not a target:
-elenco.o:
+GNUmakefile:
 #  Implicit rule search has been done.
 #  File does not exist.
-#  File has not been updated.
-
-run: elenco
-#  Implicit rule search has not been done.
-#  Modification time never checked.
-#  File has not been updated.
-#  recipe to execute (from 'Makefile', line 11):
-	./elenco < teste1.txt
-
-clean:
-#  Implicit rule search has not been done.
-#  Modification time never checked.
-#  File has not been updated.
-#  recipe to execute (from 'Makefile', line 19):
-	$(RM) *.o
+#  File has been updated.
+#  Failed to be updated.
 
 # files hash-table stats:
-# Load=9/1024=1%, Rehash=0, Collisions=2/24=8%
+# Load=6/1024=1%, Rehash=0, Collisions=0/15=0%
 # VPATH Search Paths
 
 # No 'vpath' search paths.
 
 # No general ('VPATH' variable) search path.
 
-# strcache buffers: 1 (0) / strings = 16 / storage = 123 B / avg = 7 B
-# current buf: size = 8162 B / used = 123 B / count = 16 / avg = 7 B
+# strcache buffers: 1 (0) / strings = 13 / storage = 108 B / avg = 8 B
+# current buf: size = 8162 B / used = 108 B / count = 13 / avg = 8 B
 
-# strcache performance: lookups = 28 / hit rate = 42%
+# strcache performance: lookups = 16 / hit rate = 18%
 # hash-table stats:
-# Load=16/8192=0%, Rehash=0, Collisions=2/28=7%
-# Finished Make data base on Sun Aug 21 00:09:52 2022
+# Load=13/8192=0%, Rehash=0, Collisions=1/16=6%
+# Finished Make data base on Sun Aug 21 00:32:47 2022
 
  
