@@ -1,4 +1,6 @@
 make all --print-data-base --no-builtin-variables --no-builtin-rules --question
+make: *** No rule to make target 'elenco.o', needed by 'elenco'.  Stop.
+
 # GNU Make 4.2.1
 # Built for x86_64-pc-linux-gnu
 # Copyright (C) 1988-2016 Free Software Foundation, Inc.
@@ -6,7 +8,7 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Wed Aug 24 20:20:15 2022
+# Make data base, printed on Wed Aug 24 20:21:31 2022
 
 # Variables
 
@@ -39,7 +41,7 @@ GDMSESSION = cinnamon
 # default
 MAKE_VERSION := 4.2.1
 # makefile
-CURDIR := /home/anderson/curso/otimização/trab2-otm
+CURDIR := /home/anderson/curso/otimização/trab2-otm/code
 # makefile
 SHELL = /bin/sh
 # environment
@@ -50,12 +52,14 @@ VTE_VERSION = 6003
 VSCODE_NLS_CONFIG = {"locale":"pt-br","availableLanguages":{"*":"pt-br"},"_languagePackId":"8e7a008e83c664b9876a8f72ff0490ae.pt-br","_translationsConfigFile":"/home/anderson/.config/Code/clp/8e7a008e83c664b9876a8f72ff0490ae.pt-br/tcf.json","_cacheRoot":"/home/anderson/.config/Code/clp/8e7a008e83c664b9876a8f72ff0490ae.pt-br","_resolvedLanguagePackCoreLocation":"/home/anderson/.config/Code/clp/8e7a008e83c664b9876a8f72ff0490ae.pt-br/e4503b30fc78200f846c62cf8091b76ff5547662","_corruptedFile":"/home/anderson/.config/Code/clp/8e7a008e83c664b9876a8f72ff0490ae.pt-br/corrupted.info","_languagePackSupport":true}
 # environment
 _ = /usr/bin/code
+# makefile (from 'Makefile', line 4)
+CFLAGS = -Wall -g
 # environment
 XDG_CONFIG_DIRS = /etc/xdg/xdg-cinnamon:/etc/xdg
 # environment
 GTK_OVERLAY_SCROLLING = 1
-# makefile
-MAKEFILE_LIST := 
+# makefile (from 'Makefile', line 1)
+MAKEFILE_LIST :=  Makefile
 # automatic
 @F = $(notdir $@)
 # 'override' directive
@@ -69,7 +73,7 @@ DBUS_SESSION_BUS_ADDRESS = unix:path=/run/user/1000/bus
 # environment
 LESSOPEN = | /usr/bin/lesspipe %s
 # environment
-VSCODE_CWD = /home/anderson/curso/otimização/trab2-otm
+VSCODE_CWD = /home/anderson/curso/otimização/trab2-otm/code
 # environment
 XDG_SESSION_PATH = /org/freedesktop/DisplayManager/Session0
 # environment
@@ -107,7 +111,7 @@ DISPLAY = :0
 # environment
 LIKWID_MAN = /usr/local/man
 # environment
-PWD = /home/anderson/curso/otimização/trab2-otm
+PWD = /home/anderson/curso/otimização/trab2-otm/code
 # environment
 QT_QPA_PLATFORMTHEME = qt5ct
 # default
@@ -135,7 +139,7 @@ VSCODE_CODE_CACHE_PATH = /home/anderson/.config/Code/CachedData/e4503b30fc78200f
 # environment
 LOGNAME = anderson
 # environment
-APPLICATION_INSIGHTS_NO_DIAGNOSTIC_CHANNEL = true
+APPLICATION_INSIGHTS_NO_DIAGNOSTIC_CHANNEL = 1
 # environment
 NVM_CD_FLAGS = 
 # environment
@@ -158,12 +162,14 @@ MAKE = $(MAKE_COMMAND)
 MAKECMDGOALS := all
 # environment
 SHLVL = 1
+# makefile (from 'Makefile', line 5)
+CC = gcc 
 # environment
 XDG_SESSION_ID = c2
 # environment
 USER = anderson
 # makefile
-.DEFAULT_GOAL := 
+.DEFAULT_GOAL := all
 # environment
 XDG_CURRENT_DESKTOP = X-Cinnamon
 # environment
@@ -173,7 +179,7 @@ LIBVIRT_DEFAULT_URI = qemu:///system
 # default
 MAKE_COMMAND := make
 # environment
-OLDPWD = /home/anderson/curso/otimização
+OLDPWD = /home/anderson/curso/otimização/trab2-otm
 # default
 .VARIABLES := 
 # automatic
@@ -198,6 +204,8 @@ NVM_DIR = /home/anderson/.nvm
 GDK_BACKEND = x11
 # automatic
 +F = $(notdir $+)
+# environment
+NO_AT_BRIDGE = 1
 # environment
 CINNAMON_VERSION = 5.2.7
 # environment
@@ -235,7 +243,7 @@ TERM = xterm-256color
 # environment
 VSCODE_PID = 56779
 # variable set hash-table stats:
-# Load=112/1024=11%, Rehash=0, Collisions=12/134=9%
+# Load=115/1024=11%, Rehash=0, Collisions=12/140=9%
 
 # Pattern-specific Variable Values
 
@@ -243,9 +251,9 @@ VSCODE_PID = 56779
 
 # Directories
 
-# . (device 2050, inode 59637814): 5 files, no impossibilities.
+# . (device 2050, inode 59638022): 6 files, no impossibilities.
 
-# 5 files, no impossibilities in 1 directories.
+# 6 files, no impossibilities in 1 directories.
 
 # Implicit Rules
 
@@ -253,8 +261,7 @@ VSCODE_PID = 56779
 
 # Files
 
-# Not a target:
-all:
+all: elenco
 #  Command line target.
 #  Implicit rule search has been done.
 #  File does not exist.
@@ -263,47 +270,63 @@ all:
 # Not a target:
 Makefile:
 #  Implicit rule search has been done.
-#  File does not exist.
+#  Last modified 2022-08-21 00:32:20.067138283
 #  File has been updated.
-#  Failed to be updated.
+#  Successfully updated.
 
-# Not a target:
-makefile:
+elenco: elenco.o
 #  Implicit rule search has been done.
 #  File does not exist.
-#  File has been updated.
-#  Failed to be updated.
+ 
+#  File has not been updated.
+
+purge:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from 'Makefile', line 24):
+	$(RM) elenco *.o
 
 # Not a target:
- 
-make: *** No rule to make target 'all'.  Stop.
-
 .DEFAULT:
 #  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
 
 # Not a target:
-GNUmakefile:
+elenco.o:
 #  Implicit rule search has been done.
 #  File does not exist.
-#  File has been updated.
-#  Failed to be updated.
+#  File has not been updated.
+
+run: elenco
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from 'Makefile', line 11):
+	./elenco < ./exemplos/teste1.txt
+
+clean:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from 'Makefile', line 19):
+	$(RM) *.o
 
 # files hash-table stats:
-# Load=6/1024=1%, Rehash=0, Collisions=0/15=0%
+# Load=9/1024=1%, Rehash=0, Collisions=2/24=8%
 # VPATH Search Paths
 
 # No 'vpath' search paths.
 
 # No general ('VPATH' variable) search path.
 
-# strcache buffers: 1 (0) / strings = 13 / storage = 108 B / avg = 8 B
-# current buf: size = 8162 B / used = 108 B / count = 13 / avg = 8 B
+# strcache buffers: 1 (0) / strings = 16 / storage = 127 B / avg = 7 B
+# current buf: size = 8162 B / used = 127 B / count = 16 / avg = 7 B
 
-# strcache performance: lookups = 16 / hit rate = 18%
+# strcache performance: lookups = 28 / hit rate = 42%
 # hash-table stats:
-# Load=13/8192=0%, Rehash=0, Collisions=1/16=6%
-# Finished Make data base on Wed Aug 24 20:20:16 2022
+# Load=16/8192=0%, Rehash=0, Collisions=2/28=7%
+# Finished Make data base on Wed Aug 24 20:21:31 2022
 
  
