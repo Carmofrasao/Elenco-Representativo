@@ -13,6 +13,28 @@ typedef struct {
 
 int l, m, n;
 
+// Inicializa os vetores
+void inicializa(ator * E, int tam){
+    for (int i = 0; i < tam; i++){
+        E[i].S = NULL;
+        E[i].s = 0;
+        E[i].v = 0;
+    }
+}
+
+// calcula o tamanho da parte preenchida do vetor
+int tam(ator * E, int tam){
+    int len = 0;
+    for (int i = 0; i < tam; i++){
+        if (E[i].S == NULL){
+            break;
+        }
+        len++;
+    }
+    return len;
+}
+
+// calcula o ator mais barato
 int min(ator * F, int len){
     int resul = F[0].v;
     for (int i = 1; i < len; i++){
@@ -23,25 +45,16 @@ int min(ator * F, int len){
     return resul;
 }
 
+// função limitante dada pelos professores
 int B_dada(ator * E, ator * F){
-    int len_F = 0;
-    int len_E = 0;
-    for (int i = 0; i < m; i++){
-        if (F[i].v == 0){
-            break;
-        }
-        len_F++;
-    }
-    for (int i = 0; i < n; i++){
-        if (E[i].v == 0){
-            break;
-        }
-        len_E++;
-    }
+    int len_F = tam(F, m);
+    int len_E = tam(E, n);
+
     int result = 0;
     for (int i = 0; i < len_E; i++){
-        result += E[i].v + (n - len_E) * min(F, len_F);
+        result += E[i].v;
     }
+    result +=  (n - len_E) * min(F, len_F);
     return result;
 }
 
@@ -80,10 +93,11 @@ int main(int argc, char * argv[]){
         - (SOMATÓRIO)(a∈X)va seja mínimo.
     */
 
-    ator *A = NULL;
-    ator *X = NULL;
-    A = (ator*)calloc(m, sizeof(ator));
-    X = (ator*)calloc(n, sizeof(ator));
+    ator *A = (ator*)calloc(m, sizeof(ator));
+    ator *X = (ator*)calloc(n, sizeof(ator));
+    
+    inicializa(A, m);
+    inicializa(X, n);
 
     for (int i = 0; i < m; i++){
         scanf("%d %d", &A[i].v, &A[i].s);
@@ -92,12 +106,6 @@ int main(int argc, char * argv[]){
             scanf("%d", &A[i].S[u]);
         } 
     }
-    // for (int i = 0; i < m; i++){
-    //     printf("%d %d\n", A[i].v, A[i].s);
-    //     for (int u = 0; u < A[i].s; u++){
-    //         printf("%d\n", A[i].S[u]);
-    //     }
-    // }
 
     printf("valor total: %d\n",B_dada(X, A));
     
