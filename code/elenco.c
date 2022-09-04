@@ -13,8 +13,8 @@ typedef struct {
 
 int l, m, n, *atores_escolhidos;
 
-// Inicializa os vetores
-void inicializa(ator * E, int tam){
+// zera os vetores
+void zera_vet(ator * E, int tam){
     for (int i = 0; i < tam; i++){
         E[i].S = NULL;
         E[i].s = 0;
@@ -125,8 +125,8 @@ int main(int argc, char * argv[]){
     // Vetor indicando quais atores foram escolhidos
     atores_escolhidos = (int *) calloc(n, sizeof(int));
     
-    inicializa(A, m);
-    inicializa(X, n);
+    zera_vet(A, m);
+    zera_vet(X, n);
 
     // Lendo atores e suas caracteristicas 
     for (int i = 0; i < m; i++){
@@ -139,7 +139,42 @@ int main(int argc, char * argv[]){
 
     /*----------------------------CODIGO PRINCIPAL AQUI----------------------------*/
 
-    int valor_total = B_dada(X, A);
+    int valor_total = 0;
+
+    // Usando a função dos professores
+    if(a == 1){
+        valor_total = B_dada(X, A);
+
+        // cortes de otimalidade e corte de viabilidade desligados
+        if (o == 1 && f == 1){
+            
+        }
+        // cortes de otimalidade desligado
+        else if(o == 1){
+
+        }
+        // corte de viabilidade desligados
+        else if(f == 1){
+
+        }
+    }
+    // Usando a nossa função
+    else{
+        // valor_total = Nossa_funcao(X, A);
+
+        // cortes de otimalidade e corte de viabilidade desligados
+        if (o == 1 && f == 1){
+            
+        }
+        // cortes de otimalidade desligado
+        else if(o == 1){
+
+        }
+        // corte de viabilidade desligados
+        else if(f == 1){
+
+        }
+    }
 
     // Essa é a saida que esta nos exemplos 
     for (int i = 0; i < n; i++){
