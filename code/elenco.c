@@ -6,9 +6,9 @@
 #include <stdlib.h>
 
 typedef struct {
-    int v;
-    int s;
-    int *S;
+    int v;    // Valor cobrado pelo ator
+    int s;    // Número de grupos que ele faz parte
+    int *S;   // Grupos que ele faz parte
 } ator;
 
 int l, m, n, *atores_escolhidos;
@@ -75,6 +75,35 @@ int B_dada(ator * E, ator * F){
         }
     }
     
+    return result;
+}
+
+void adiciona(ator * E, int pos, ator A) {
+    E[pos].v = A.v;
+    E[pos].s = A.s;
+    E[pos].S = (int *)calloc(E[pos].s, sizeof(int));
+    for (int u = 0; u < E[pos].s; u++){
+        E[pos].S[u] = A.S[u];
+    }
+}
+
+// Função com breach & bound
+int elenca(ator * E, ator * F) {
+    int len_F = tam(F, m);
+    int len_E = tam(E, n);
+
+    int result = 0;
+
+    for(int i = 0; i < len_F; i++) {
+        adiciona(E, len_E, F[i]);
+        len_E++;
+        if (len_E == n) {
+            // atende todos os grupos?
+            // caso não, quebra
+        }
+    }
+
+
     return result;
 }
 
@@ -156,6 +185,10 @@ int main(int argc, char * argv[]){
         // corte de viabilidade desligados
         else if(f == 1){
 
+        } 
+        // Padrão (função dos professores com corte de otimalidade e viabilidade ativo)
+        else {
+
         }
     }
     // Usando a nossa função
@@ -172,6 +205,10 @@ int main(int argc, char * argv[]){
         }
         // corte de viabilidade desligados
         else if(f == 1){
+
+        } 
+        // Padrão (nossa função com corte de otimalidade e viabilidade ativo)
+        else {
 
         }
     }

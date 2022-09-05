@@ -1,6 +1,6 @@
 make --dry-run --always-make --keep-going --print-directory
-make: Entering directory '/home/anderson/curso/otimização/trab2-otm/code'
+make: Entering directory '/home/heise/trab2-otm/code'
 gcc  -Wall -g   -c -o elenco.o elenco.c
 gcc    elenco.o   -o elenco
-make: Leaving directory '/home/anderson/curso/otimização/trab2-otm/code'
+make: Leaving directory '/home/heise/trab2-otm/code'
  

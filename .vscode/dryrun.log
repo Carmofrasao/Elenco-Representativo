@@ -1,6 +1,6 @@
 make --dry-run --always-make --keep-going --print-directory
-make: Entering directory '/home/anderson/curso/otimização/trab2-otm'
-make: Leaving directory '/home/anderson/curso/otimização/trab2-otm'
+make: Entering directory '/home/heise/trab2-otm'
+make: Leaving directory '/home/heise/trab2-otm'
  
 make: *** No targets specified and no makefile found.  Stop.
 
