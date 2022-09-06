@@ -11,6 +11,12 @@ typedef struct {
     int *S;   // Grupos que ele faz parte
 } ator;
 
+// Indexador de grupo
+int tam_g = 0;
+// Vetor de controle dos grupos
+int* grupos;
+// Valor otimo da soma dos salários
+int otim = 0;
 // Numero de grupos (l = |S|)
 int l;
 // Numero de atores (m = |A|)
@@ -105,22 +111,63 @@ void adiciona(ator * E, int pos, ator A) {
     }
 }
 
+void adiciona_grupo(int grupo) {
+    grupos[tam_g++] = grupo;
+}
+
+int conta_grupo(int grupo) {
+    for (int i = 0; i < l; i++) {
+        if ( grupo == grupos[i] ) {
+            return -1;
+        }   
+    }
+
+    adiciona_grupo(grupo);
+    return 1;
+} 
+
+int viavel(ator * at) {
+    for (int i = 0; i < at->s; i++) {
+        conta_grupo(at->S[i]);
+    }
+
+    if (tam_g == l) {
+        return 1;
+    }
+
+    return 0;
+}
+
+int possibilidades(ator* at, ator * F, int len_F, int len_E) { 
+
+    if (len_E == n) return at->v;
+
+    for (int i = 0; i < len_F; i++) {
+        otim += possibilidades(&F[i], F, len_F, len_E++);
+        if ( !viavel(at) ) 
+            otim -= at->v;
+    }
+
+    return otim;
+}
+
 // Função com breach & bound
+// E é o vetor de atores escolhidos
+// F é o vetor com os atores disponiveis
 int elenca(ator * E, ator * F) {
+    // Tamanho do vetor F preenchido
     int len_F = tam(F, m);
+
+    // Tamanho do vetor E preenchido
     int len_E = tam(E, n);
 
     int result = 0;
 
-    for(int i = 0; i < len_F; i++) {
-        adiciona(E, len_E, F[i]);
-        len_E++;
-        if (len_E == n) {
-            // atende todos os grupos?
-            // caso não, quebra
-        }
+    for (int i = 0; i < len_F; i++) {
+        otim += possibilidades(&F[i], F, len_F, ++len_E);
+        if ( !viavel(&F[i]) ) 
+            otim -= F[i].v;
     }
-
 
     return result;
 }
@@ -168,6 +215,9 @@ int main(int argc, char * argv[]){
 
     // Vetor com os atores escolhidos
     ator *X = (ator*)calloc(n, sizeof(ator));
+
+    // Vetor dos grupos alocado
+    grupos = malloc(sizeof(int) * tam_g);
 
     // Vetor indicando quais atores foram escolhidos
     atores_escolhidos = (int *) calloc(n, sizeof(int));

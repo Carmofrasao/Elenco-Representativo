@@ -8,7 +8,7 @@ CC = gcc
 all : elenco
 
 run: elenco
-	./elenco < ./exemplos/teste1.txt
+	./elenco -a < ./exemplos/teste1.txt
 
 elenco: elenco.o
 
