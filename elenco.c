@@ -11,9 +11,18 @@ typedef struct {
     int *S;   // Grupos que ele faz parte
 } ator;
 
-int l, m, n, *atores_escolhidos;
+// Numero de grupos (l = |S|)
+int l;
+// Numero de atores (m = |A|)
+int m;
+// Numero de personagens (n = |P|)
+int n;
+// Vetor de atores escolhidos para fins de impressão
+int *atores_escolhidos;
 
 // zera os vetores
+// E é o vetor a ser zerado
+// tam é o tamanho do espaço alocado para E
 void zera_vet(ator * E, int tam){
     for (int i = 0; i < tam; i++){
         E[i].S = NULL;
@@ -23,6 +32,8 @@ void zera_vet(ator * E, int tam){
 }
 
 // Calcula o tamanho da parte preenchida do vetor
+// E é o vetor a tem seu tamanho calculado
+// tam é o tamanho do espaço alocado para E
 int tam(ator * E, int tam){
     int len = 0;
     for (int i = 0; i < tam; i++){
@@ -35,6 +46,8 @@ int tam(ator * E, int tam){
 }
 
 // Calcula o ator mais barato
+// F é o vetor ao qual vai ser escolhido o ator mais barato
+// len é o espaço preenchido em F
 int min(ator * F, int len){
     int resul = F[0].v;
     int index = 0;
@@ -48,16 +61,20 @@ int min(ator * F, int len){
 }
 
 // Função limitante dada pelos professores
+// E é o vetor de atores escolhidos
+// F é o vetor com os atores disponiveis
 int B_dada(ator * E, ator * F){
     int len_F = tam(F, m);
     int len_E = tam(E, n);
 
+    // soma dos salario dos atores escolhidos
     int result = 0;
 
     // Somatorio dos valores dos atores que ja foram escolhidos
     for (int i = 0; i < len_E; i++){
         result += E[i].v;
     }
+    // indice do ator mais barato no vetor de atores disponiveis
     int index_min = min(F, len_F);
 
     // Pega o ator mais barato, multiplica pelo numero de papeis que falta preecher
@@ -78,6 +95,7 @@ int B_dada(ator * E, ator * F){
     return result;
 }
 
+// Função para adicionar o ator A na posição pos do vetor E
 void adiciona(ator * E, int pos, ator A) {
     E[pos].v = A.v;
     E[pos].s = A.s;
