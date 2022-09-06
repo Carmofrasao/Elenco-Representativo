@@ -88,17 +88,6 @@ int B_dada(ator * E, ator * F){
     // Pega o ator mais barato, multiplica pelo numero de papeis que falta preecher
     // E soma ao valor total dos atores
     result +=  (n - len_E) * F[index_min].v;
-
-    // Preenchendo o vetor de papeis com a parte do ator mais barato
-    for (int i = len_E; i < n; i++){
-        atores_escolhidos[i] = index_min+1;
-        E[i].v = F[index_min].v;
-        E[i].s = F[index_min].s;
-        E[i].S = (int *)calloc(E[i].s, sizeof(int));
-        for (int u = 0; u < E[i].s; u++){
-            E[i].S[u] = F[index_min].S[u];
-        }
-    }
     
     return result;
 }
@@ -248,6 +237,17 @@ int main(int argc, char * argv[]){
     }
 
     /*----------------------------CODIGO PRINCIPAL AQUI----------------------------*/
+
+    // Usar isso para preencher o vetor de atores escolhidos
+    // for (int i = len_E; i < n; i++){
+    //     atores_escolhidos[i] = index_min+1;
+    //     E[i].v = F[index_min].v;
+    //     E[i].s = F[index_min].s;
+    //     E[i].S = (int *)calloc(E[i].s, sizeof(int));
+    //     for (int u = 0; u < E[i].s; u++){
+    //         E[i].S[u] = F[index_min].S[u];
+    //     }
+    // }
 
     int valor_total = 0;
 
