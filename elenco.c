@@ -15,8 +15,10 @@ typedef struct {
 int tam_g = 0;
 // Vetor de controle dos grupos
 int* grupos;
-// Valor otimo da soma dos salários
-int otim = 0;
+// Valor ótimo geral da soma dos salários
+int otim_geral = 300000;
+// Valor otimo local da soma dos salários
+int otim_local = 0;
 // Numero de grupos (l = |S|)
 int l;
 // Numero de atores (m = |A|)
@@ -143,14 +145,18 @@ int possibilidades(ator* at, ator * F, int len_F, int len_E) {
     if (len_E == n) return at->v;
 
     for (int i = 0; i < len_F; i++) {
-        otim += possibilidades(&F[i], F, len_F, ++len_E);
-        if ( !viavel(at) ) {
-            len_E -= 1;
-            otim -= at->v;
-        } 
+        otim_local += possibilidades(&F[i], F, len_F, ++len_E);
+        if ( viavel(at) ) {
+            if (otim_local < otim_geral) {
+                otim_geral = otim_local;
+            }
+        } else {
+            otim_local -= at->v;
+        }
+        len_E -= 1;
     }
 
-    return otim;
+    return otim_local;
 }
 
 // Função com breach & bound
@@ -164,15 +170,19 @@ int elenca(ator * E, ator * F) {
     int len_E = tam(E, n);
 
     for (int i = 0; i < len_F; i++) {
-
-        otim += possibilidades(&F[i], F, len_F, ++len_E);
-        if ( !viavel(&F[i]) ) {
-            len_E -= 1;
-            otim -= F[i].v;
+        otim_local = 0;
+        possibilidades(&F[i], F, len_F, ++len_E);
+        if ( viavel(&F[i]) ) {
+            if (otim_local < otim_geral) {
+                otim_geral = otim_local;
+            }
+        } else {
+            otim_local -= F[i].v;
         }
+        len_E -= 1;
     }
 
-    return otim;
+    return otim_geral;
 }
 
 
