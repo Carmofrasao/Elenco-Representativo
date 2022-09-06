@@ -143,9 +143,11 @@ int possibilidades(ator* at, ator * F, int len_F, int len_E) {
     if (len_E == n) return at->v;
 
     for (int i = 0; i < len_F; i++) {
-        otim += possibilidades(&F[i], F, len_F, len_E++);
-        if ( !viavel(at) ) 
+        otim += possibilidades(&F[i], F, len_F, ++len_E);
+        if ( !viavel(at) ) {
+            len_E -= 1;
             otim -= at->v;
+        } 
     }
 
     return otim;
@@ -162,9 +164,12 @@ int elenca(ator * E, ator * F) {
     int len_E = tam(E, n);
 
     for (int i = 0; i < len_F; i++) {
+
         otim += possibilidades(&F[i], F, len_F, ++len_E);
-        if ( !viavel(&F[i]) ) 
+        if ( !viavel(&F[i]) ) {
+            len_E -= 1;
             otim -= F[i].v;
+        }
     }
 
     return otim;
@@ -215,7 +220,7 @@ int main(int argc, char * argv[]){
     ator *X = (ator*)calloc(n, sizeof(ator));
 
     // Vetor dos grupos alocado
-    grupos = malloc(sizeof(int) * tam_g);
+    grupos = calloc(l, sizeof(int));
 
     // Vetor indicando quais atores foram escolhidos
     atores_escolhidos = (int *) calloc(n, sizeof(int));

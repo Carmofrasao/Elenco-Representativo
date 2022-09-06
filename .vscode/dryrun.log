@@ -1,5 +1,5 @@
 make --dry-run --keep-going --print-directory
-make: Entering directory '/home/heise/trab2-otm'
+make: Entering directory '/home/anderson/Projetos/trab2-otm'
 make: Nothing to be done for 'all'.
-make: Leaving directory '/home/heise/trab2-otm'
+make: Leaving directory '/home/anderson/Projetos/trab2-otm'
  
