@@ -161,15 +161,13 @@ int elenca(ator * E, ator * F) {
     // Tamanho do vetor E preenchido
     int len_E = tam(E, n);
 
-    int result = 0;
-
     for (int i = 0; i < len_F; i++) {
         otim += possibilidades(&F[i], F, len_F, ++len_E);
         if ( !viavel(&F[i]) ) 
             otim -= F[i].v;
     }
 
-    return result;
+    return otim;
 }
 
 
