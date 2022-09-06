@@ -259,7 +259,7 @@ int main(int argc, char * argv[]){
     }
     // Usando a nossa função
     else{
-        // valor_total = Nossa_funcao(X, A);
+        valor_total = elenca(X, A);
 
         // cortes de otimalidade e corte de viabilidade desligados
         if (o == 1 && f == 1){
