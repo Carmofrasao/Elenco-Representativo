@@ -12,6 +12,47 @@ ator = {
 # Vetor com todos os atores disponiveis
 Atores_disponiveis = []
 
+# Vetor com os atores escolhidos
+Atores_escolhidos = []
+
+# Numero de grupos (l = |S|)
+l = 0
+# Numero de atores (m = |A|)
+m = 0
+# Numero de personagens (n = |P|)
+n = 0
+
+# Calcula o ator mais barato
+# F é o vetor ao qual vai ser escolhido o ator mais barato
+# len é o espaço preenchido em F
+def min(F, len):
+    resul = F[0]['valor']
+    index = 0
+    for i in range(1, len):
+        if F[i]['valor'] < resul:
+            resul = F[i]['valor']
+            index = i
+    return index
+
+def B_dada(E, F):
+    len_F = len(F)
+    len_E = len(E)
+
+    # soma dos salario dos atores escolhidos
+    result = 0
+
+    # Somatorio dos valores dos atores que ja foram escolhidos
+    for i in range(len_E):
+        result += E[i]['valor']
+
+    # indice do ator mais barato no vetor de atores disponiveis
+    index_min = min(F, len_F)
+
+    # Pega o ator mais barato, multiplica pelo numero de papeis que falta preecher
+    # E soma ao valor total dos atores
+    result +=  (n - len_E) * F[index_min]['valor']
+    
+    return result
 
 if __name__ == "__main__":
     f = o = a = 0
@@ -65,7 +106,9 @@ if __name__ == "__main__":
     # ------------------------CODIGO PRINCIPAL AQUI-------------------------------
 
     tempo_inicio = dt.datetime.now()
-
+    valor_total = B_dada(Atores_escolhidos, Atores_disponiveis)
     tempo_total = dt.datetime.now() - tempo_inicio
+
+    print(valor_total)
 
     # ----------------------------------------------------------------------------
