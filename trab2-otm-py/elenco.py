@@ -30,22 +30,11 @@ def custo(atores):
 
     sum = 0
 
-    for ator in len(atores):
+    for ator in atores:
         sum += int(valores[ator])
 
     return sum
 
-# Calcula o ator mais barato
-# F é o vetor ao qual vai ser escolhido o ator mais barato
-# len é o espaço preenchido em F
-def min(F, len):
-    resul = F[0]['valor']
-    index = 0
-    for i in range(1, len):
-        if F[i]['valor'] < resul:
-            resul = F[i]['valor']
-            index = i
-    return index
 
 def B_dada(pos, atores):
 
@@ -58,9 +47,10 @@ def B_dada(pos, atores):
 
     # Pega o ator mais barato, multiplica pelo numero de papeis que falta preecher
     # E soma ao valor total dos atores
-    result +=  (n - len(atores)) * F[index_min]['valor']
+    result +=  (n - len(atores)) * valores[index_min]
     
     return result
+
 
 def viavel(pos, atores):
     global grupos, n
@@ -94,7 +84,7 @@ def viavel(pos, atores):
     return True
 
 def elenca(pos=0, atores=[]):
-    global nodos, n, custo_total
+    global nodos, n
     
     # Visitamos mais um nodo
     nodos += 1
@@ -111,18 +101,20 @@ def elenca(pos=0, atores=[]):
             otimo['melhores_atores'] = atores
         return
     
-    bound = B_dada(E, F)
-
-    for ator in F:
-        
-        if (bound >= custo_total):
-            return
-
-        elenca(E,F)    
+    bound_skip = B_dada(pos+1, atores)
+    bound_pick = B_dada(pos+1, atores+[pos])
+    if min(bound_pick, bound_skip) >= otimo["custo"]:
+        return
+    if bound_pick < bound_skip:
+        elenca(pos+1, atores+[pos])
+        if bound_skip < otimo["custo"]:
+            elenca(pos+1, atores)
+    else:
+        elenca(pos+1, atores)
+        if bound_pick < otimo["custo"]:
+            elenca(pos+1, atores+[pos])   
 
     
-
-
 if __name__ == "__main__":
     f = o = a = 0
 
@@ -149,18 +141,6 @@ if __name__ == "__main__":
 
     indexador = 3
 
-    # Dados um conjunto S de grupos, um conjunto A de atores, um conjunto
-    # P de personagens, e, para cada ator a ∈ A, um conjunto, Sa ⊆ S indicando os
-    # grupos dos quais a faz parte, devemos encontrar um elenco que tenha um ator
-    # para cada personagem (todos os atores podem fazer todas as personagens) e
-    # todos os grupos tenham um representante. Além disso, também temos um
-    # valor, va, associado com cada ator a ∈ A, e queremos que o custo do elenco
-    # seja mínimo.
-    # Ou seja, devemos encontrar um subconjunto X ⊆ A tal que:
-    # - |X| = |P|;
-    # - (UNIÃO)(a∈X)Sa = S; e
-    # - (SOMATÓRIO)(a∈X)va seja mínimo.
-
     valores = []
     grupos = []
     # Lendo atores e suas caracteristicas
@@ -177,8 +157,9 @@ if __name__ == "__main__":
     # ------------------------CODIGO PRINCIPAL AQUI-------------------------------
 
     tempo_inicio = dt.datetime.now()
-    elenca(Atores_escolhidos, Atores_disponiveis)
+    elenca()
     print("nodos visitados: ", nodos)
+    print('otimo: ', otimo)
     tempo_total = dt.datetime.now() - tempo_inicio
 
     # ----------------------------------------------------------------------------
