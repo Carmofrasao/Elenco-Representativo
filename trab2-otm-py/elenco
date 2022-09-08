@@ -3,9 +3,10 @@
 import sys
 import datetime as dt
 
-otimo = {
-    'custo': int(99999),
-    'melhores_atores' : []
+ator = {
+    'valor' :   0,
+    'n_grupos': 0,
+    'grupos':   [],
 }
 
 # Vetor com todos os atores disponiveis
@@ -14,24 +15,23 @@ Atores_disponiveis = []
 # Vetor com os atores escolhidos
 Atores_escolhidos = []
 
+otimo = []
 # Numero de grupos (l = |S|)
 l = 0
 # Numero de atores (m = |A|)
 m = 0
 # Numero de personagens (n = |P|)
 n = 0
-
 # Nodos visitados na árvore
 nodos = 0
+# Custo total até o momento
+custo_total = 1000
 
-def custo(atores):
-
-    global valores
-
+def custo(E):
     sum = 0
 
-    for ator in len(atores):
-        sum += int(valores[ator])
+    for ator in E:
+        sum += int(ator['valor'])
 
     return sum
 
@@ -47,35 +47,40 @@ def min(F, len):
             index = i
     return index
 
-def B_dada(pos, atores):
+def B_dada(E, F):
+    len_F = len(F)
+    len_E = len(E)
 
-    global valores
+    # soma dos salario dos atores escolhidos
+    result = 0
 
-    result = custo(atores)
+    # Somatorio dos valores dos atores que ja foram escolhidos
+    for i in range(len_E):
+        result += E[i]['valor']
 
     # indice do ator mais barato no vetor de atores disponiveis
-    index_min = valores.index(min(valores))
+    index_min = min(F, len_F)
 
     # Pega o ator mais barato, multiplica pelo numero de papeis que falta preecher
     # E soma ao valor total dos atores
-    result +=  (n - len(atores)) * F[index_min]['valor']
+    result +=  (n - len_E) * F[index_min]['valor']
     
     return result
 
-def viavel(pos, atores):
-    global grupos, n
+def viavel(E, F):
+    global l, m, n
 
     # print("escolhidos: ", E, "disponiveis: ", F)
     representados = set()
-    for ator in atores:
-        for grupo in grupos[ator]:
+    for ator in E:
+        for grupo in ator['grupos']:
             representados.add(grupo)
 
     # print("representados: ", representados)
 
     nao_representados = set()
-    for ator in range(i, len(grupos)):
-        for grupo in grupos[ator]:
+    for ator in F:
+        for grupo in ator['grupos']:
             nao_representados.add(grupo)
     
     # print("nao representados: ", nao_representados)
@@ -84,41 +89,56 @@ def viavel(pos, atores):
         print("1: ", len(representados.union(nao_representados)))
         return False
 
-    # REVISAR
-    if len(atores)+len(grupos)-pos < n:
+    if len(F) + len(E) < n:
+        print("2: ", len(F) + len(E))
         return False
 
-    if len(atores) > n:
+    if len(E) > n:
+        print("3: ", len(F))
         return False
 
     return True
 
-def elenca(pos=0, atores=[]):
-    global nodos, n, custo_total
+def elenca(E, F):
+    global nodos, n, m, custo_total, otimo
+    print("RODADA ", nodos)
+    print("\n")
     
-    # Visitamos mais um nodo
-    nodos += 1
+    for i in range(m):
+        # Visitamos mais um nodo
+        nodos += 1
 
-    # Caso base 1: inviável
-    if not viavel(pos, atores):
-        return
-
-    # Caso base 2: se preenchemos o vetor de escolhidos e é viável
-    if len(atores) == n: 
-        custo_local = custo(atores)
-        if (custo_local < otimo['custo']):
-            otimo['custo'] = custo_local
-            otimo['melhores_atores'] = atores
-        return
-    
-    bound = B_dada(E, F)
-
-    for ator in F:
-        
-        if (bound >= custo_total):
+        # Caso base 1: inviável
+        if not viavel(E, F):
+            F.insert(0, E.pop(len(E)-1))
             return
 
-        elenca(E,F)    
+        # Caso base 2: se preenchemos o vetor de escolhidos e é viável
+        if len(E) == n: 
+            custo_local = custo(E)
+            print("custo local: ",custo_local, "\n custo total: ", custo_total)
+            if (custo_local < custo_total):
+                custo_total = custo_local
+                otimo = E.copy()
+            F.insert(0, E.pop(len(E)-1))
+            return
+        
+        E.append(F.pop(i))
+        bound = B_dada(E, F)
+        print("bound: ", bound)
+        print("custo total: ", custo_total)
+
+        for ator in F:
+
+            print("escolhidos: ", E, "\n", "disponiveis: ", F)
+            if (bound >= custo_total):
+                F.insert(0, E.pop(len(E)-1))
+                return
+
+            F.remove(ator)
+            E.append(ator)
+            print("escolhidos: ", E ,"\n", "disponiveis: ", F)
+            elenca(E,F)    
 
     
 
@@ -147,7 +167,7 @@ if __name__ == "__main__":
     n = entrada[2] # numero de personagens
     # l = |S|, m = |A| e n = |P| 
 
-    indexador = 3
+    cursor = 3
 
     # Dados um conjunto S de grupos, um conjunto A de atores, um conjunto
     # P de personagens, e, para cada ator a ∈ A, um conjunto, Sa ⊆ S indicando os
@@ -161,24 +181,23 @@ if __name__ == "__main__":
     # - (UNIÃO)(a∈X)Sa = S; e
     # - (SOMATÓRIO)(a∈X)va seja mínimo.
 
-    valores = []
-    grupos = []
     # Lendo atores e suas caracteristicas
     for _ in range(m):
-        valores.append(entrada[indexador])
-        n_grupos = entrada[indexador+1]
-        gps = []
-
-        for i in range(n_grupos):
-            gps.append(entrada[indexador+2+i])
-        grupos.append(gps)
-        indexador += n_grupos+2
+        ator['valor'] = entrada[cursor]
+        ator['n_grupos'] = entrada[cursor+1]
+        for i in range(ator['n_grupos']):
+            ator['grupos'].append(entrada[cursor+2+i])
+        cursor += ator['n_grupos']+2
+        aux = ator.copy()
+        Atores_disponiveis.append(aux)
+        ator['grupos'] = []
 
     # ------------------------CODIGO PRINCIPAL AQUI-------------------------------
 
     tempo_inicio = dt.datetime.now()
     elenca(Atores_escolhidos, Atores_disponiveis)
     print("nodos visitados: ", nodos)
+    print(otimo)
     tempo_total = dt.datetime.now() - tempo_inicio
 
     # ----------------------------------------------------------------------------
