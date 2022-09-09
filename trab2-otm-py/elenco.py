@@ -4,7 +4,7 @@ import sys
 import datetime as dt
 
 otimo = {
-    'custo': int(99999),
+    'custo': int(9999999),
     'melhores_atores' : []
 }
 
@@ -49,7 +49,7 @@ def B_nossa(pos, atores):
 
 def B_dada(pos, atores):
 
-    global valores
+    global valores, n
 
     result = custo(atores)
 
@@ -64,10 +64,6 @@ def B_dada(pos, atores):
 
 
 def viavel(pos, atores):
-
-    if f == 0:
-        return True
-    
     global grupos, n
 
     # print("escolhidos: ", E, "disponiveis: ", F)
@@ -79,17 +75,15 @@ def viavel(pos, atores):
     # print("representados: ", representados)
 
     nao_representados = set()
-    for ator in range(i, len(grupos)):
+    for ator in range(pos, len(grupos)):
         for grupo in grupos[ator]:
             nao_representados.add(grupo)
     
     # print("nao representados: ", nao_representados)
 
-    if len(representados.union(nao_representados)) != l:
-        print("1: ", len(representados.union(nao_representados)))
+    if len(representados.union(nao_representados)) != l and f == 0:
         return False
 
-    # REVISAR
     if len(atores)+len(grupos)-pos < n:
         return False
 
@@ -99,7 +93,7 @@ def viavel(pos, atores):
     return True
 
 def elenca(pos=0, atores=[]):
-    global nodos, n
+    global nodos, n, o
     
     # Visitamos mais um nodo
     nodos += 1
@@ -111,23 +105,27 @@ def elenca(pos=0, atores=[]):
     # Caso base 2: se preenchemos o vetor de escolhidos e é viável
     if len(atores) == n: 
         custo_local = custo(atores)
-        if (custo_local < otimo['custo']) and o == 0:
+        if (custo_local < otimo['custo']):
             otimo['custo'] = custo_local
             otimo['melhores_atores'] = atores
         return
     
-    bound_prox = bound(pos+1, atores)
-    bound_atual = bound(pos+1, atores+[pos])
-    if min(bound_atual, bound_prox) >= otimo["custo"]:
-        return
-    if bound_atual < bound_prox:
-        elenca(pos+1, atores+[pos])
-        if bound_prox < otimo["custo"]:
+    if (o == 0):
+        bound_prox = bound(pos+1, atores)
+        bound_atual = bound(pos+1, atores+[pos])
+        if min(bound_atual, bound_prox) >= otimo["custo"]:
+            return
+        if bound_atual < bound_prox:
+            elenca(pos+1, atores+[pos])
+            if bound_prox < otimo["custo"]:
+                elenca(pos+1, atores)
+        else:
             elenca(pos+1, atores)
+            if bound_atual < otimo["custo"]:
+                elenca(pos+1, atores+[pos])   
     else:
-        elenca(pos+1, atores)
-        if bound_atual < otimo["custo"]:
-            elenca(pos+1, atores+[pos])   
+        elenca(pos+1, atores+[pos])
+    
 
     
 if __name__ == "__main__":
