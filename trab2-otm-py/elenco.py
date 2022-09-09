@@ -42,7 +42,7 @@ def B_nossa(pos, atores):
     global valores, n
     
     result = custo(atores)
-    candidatos = valores.copy()[:pos]
+    candidatos = valores.copy()[pos:]
     candidatos.sort()
     candidatos = candidatos[:n-len(atores)] 
     return result + sum(candidatos)
