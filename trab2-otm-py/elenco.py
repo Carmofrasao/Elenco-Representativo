@@ -24,6 +24,9 @@ n = 0
 # Nodos visitados na árvore
 nodos = 0
 
+# Função bound, pode ser a nossa ou a dos professores
+bound = 0
+
 def custo(atores):
 
     global valores
@@ -101,17 +104,17 @@ def elenca(pos=0, atores=[]):
             otimo['melhores_atores'] = atores
         return
     
-    bound_skip = B_dada(pos+1, atores)
-    bound_pick = B_dada(pos+1, atores+[pos])
-    if min(bound_pick, bound_skip) >= otimo["custo"]:
+    bound_prox = bound(pos+1, atores)
+    bound_atual = bound(pos+1, atores+[pos])
+    if min(bound_atual, bound_prox) >= otimo["custo"]:
         return
-    if bound_pick < bound_skip:
+    if bound_atual < bound_prox:
         elenca(pos+1, atores+[pos])
-        if bound_skip < otimo["custo"]:
+        if bound_prox < otimo["custo"]:
             elenca(pos+1, atores)
     else:
         elenca(pos+1, atores)
-        if bound_pick < otimo["custo"]:
+        if bound_atual < otimo["custo"]:
             elenca(pos+1, atores+[pos])   
 
     
@@ -126,11 +129,15 @@ if __name__ == "__main__":
             elif sys.argv[i] == '-o':
                 o = 1
             elif sys.argv[i] == '-a':
-                a =1
+                a = 1
     
     # -f = desligar os cortes de viabilidade
     # -o = desligar os cortes de otimalidade
     # -a = usar a função limitante dada pelos professores
+
+    # bound = B_nossa
+    if a == 1:
+        bound = B_dada
 
     # Lendo numero de representações, atores e papeis 
     entrada = [int(x) for x in sys.stdin.read().split()]
@@ -158,8 +165,16 @@ if __name__ == "__main__":
 
     tempo_inicio = dt.datetime.now()
     elenca()
-    print("nodos visitados: ", nodos)
-    print('otimo: ', otimo)
     tempo_total = dt.datetime.now() - tempo_inicio
+
+    if otimo['custo'] == int(99999):
+        print('Inviavel')
+    else:
+        print('Número de nós na árvore da solução:', nodos, file=sys.stderr)
+        print('Tempo de execução:', tempo_total, file=sys.stderr)
+        for ator in otimo['melhores_atores'][:-1]:
+            print(ator+1, end=' ')
+        print(otimo['melhores_atores'][-1]+1)
+        print(otimo['custo'])
 
     # ----------------------------------------------------------------------------
