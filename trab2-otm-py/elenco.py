@@ -73,7 +73,7 @@ def viavel(pos, atores):
     
     # print("nao representados: ", nao_representados)
 
-    if len(representados.union(nao_representados)) != l:
+    if len(representados.union(nao_representados)) != l and f == 0:
         print("1: ", len(representados.union(nao_representados)))
         return False
 
@@ -99,7 +99,7 @@ def elenca(pos=0, atores=[]):
     # Caso base 2: se preenchemos o vetor de escolhidos e é viável
     if len(atores) == n: 
         custo_local = custo(atores)
-        if (custo_local < otimo['custo']):
+        if (custo_local < otimo['custo']) and o == 0:
             otimo['custo'] = custo_local
             otimo['melhores_atores'] = atores
         return
