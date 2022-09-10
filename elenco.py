@@ -4,15 +4,9 @@ import sys
 import datetime as dt
 
 otimo = {
-    'custo': int(9999999),
+    'custo': float("inf"),
     'melhores_atores' : []
 }
-
-# Vetor com todos os atores disponiveis
-Atores_disponiveis = []
-
-# Vetor com os atores escolhidos
-Atores_escolhidos = []
 
 # Numero de grupos (l = |S|)
 l = 0
@@ -41,10 +35,19 @@ def custo(atores):
 def B_nossa(pos, atores):
     global valores, n
     
+    # pega o custo dos atores escolhidos
     result = custo(atores)
+
+    # pega os demais atores possíveis
     candidatos = valores.copy()[pos:]
+
+    # ordena os custos
     candidatos.sort()
+
+    # remove os mais caros
     candidatos = candidatos[:n-len(atores)] 
+    
+    # retorna o custo dos escolhidos + a soma dos mais baratos
     return result + sum(candidatos)
 
 def B_dada(pos, atores):
@@ -81,13 +84,19 @@ def viavel(pos, atores):
     
     # print("nao representados: ", nao_representados)
 
-    if len(representados.union(nao_representados)) != l and f == 0:
+    # não representamos todos os grupos
+    if len(representados.union(nao_representados)) != l:
+        print("Não representamos todos os grupos")
         return False
 
+    # número de atores escolhidos e grupos restantes não cobrirá número de papeis
     if len(atores)+len(grupos)-pos < n:
+        print("Não suficiente para papeis")
         return False
 
+    # escolhi mais que papeis disponíveis
     if len(atores) > n:
+        print("escolhemos atores demais")
         return False
 
     return True
@@ -95,11 +104,13 @@ def viavel(pos, atores):
 def elenca(pos=0, atores=[]):
     global nodos, n, o
     
+    print("\n RODADA", nodos+1)
     # Visitamos mais um nodo
     nodos += 1
 
     # Caso base 1: inviável
     if not viavel(pos, atores):
+        print("Não viável para", pos)
         return
 
     # Caso base 2: se preenchemos o vetor de escolhidos e é viável
@@ -108,23 +119,31 @@ def elenca(pos=0, atores=[]):
         if (custo_local < otimo['custo']):
             otimo['custo'] = custo_local
             otimo['melhores_atores'] = atores
+        
+        print("otimo: ", otimo)
         return
     
-    if (o == 0):
-        bound_prox = bound(pos+1, atores)
-        bound_atual = bound(pos+1, atores+[pos])
-        if min(bound_atual, bound_prox) >= otimo["custo"]:
-            return
-        if bound_atual < bound_prox:
-            elenca(pos+1, atores+[pos])
-            if bound_prox < otimo["custo"]:
-                elenca(pos+1, atores)
-        else:
-            elenca(pos+1, atores)
-            if bound_atual < otimo["custo"]:
-                elenca(pos+1, atores+[pos])   
-    else:
+    bound_atual = bound(pos+1, atores)
+    print("bound atual: ", bound_atual, "para ator: ", pos)
+    bound_prox = bound(pos+1, atores+[pos])
+    print("bound proximo: ", bound_prox, "para ator: ", pos)
+
+    print("custo atual: ", otimo['custo'])
+    
+    # nucna entra?????????????????????????????
+    if min(bound_prox, bound_atual) >= otimo["custo"]:
+        print("cortei")
+        return
+
+    if bound_prox < bound_atual:
         elenca(pos+1, atores+[pos])
+        if bound_atual < otimo["custo"]:
+            elenca(pos+1, atores)
+            
+    else:
+        elenca(pos+1, atores)
+        if bound_prox < otimo["custo"]:
+            elenca(pos+1, atores+[pos])   
     
 
     
@@ -161,7 +180,7 @@ if __name__ == "__main__":
     valores = []
     grupos = []
     # Lendo atores e suas caracteristicas
-    for _ in range(m):
+    for lixo in range(m):
         valores.append(entrada[indexador])
         n_grupos = entrada[indexador+1]
         gps = []
@@ -177,7 +196,7 @@ if __name__ == "__main__":
     elenca()
     tempo_total = dt.datetime.now() - tempo_inicio
 
-    if otimo['custo'] == int(99999):
+    if otimo['custo'] == float("inf"):
         print('Inviavel')
     else:
         print('Número de nós na árvore da solução:', nodos, file=sys.stderr)
