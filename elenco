@@ -118,13 +118,10 @@ def elenca(pos=0, atores=[]):
         if (custo_local < otimo['custo']):
             otimo['custo'] = custo_local
             otimo['melhores_atores'] = atores
-        
         return
     
     bound_atual = bound(pos+1, atores)
-
     bound_prox = bound(pos+1, atores+[pos])
-
 
     if (f == 0):
         if (o == 0):
