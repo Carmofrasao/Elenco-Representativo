@@ -15,6 +15,10 @@ m = 0
 # Numero de personagens (n = |P|)
 n = 0
 
+cortes_otimalidade = 0
+
+cortes_viabilidade = 0
+
 # Nodos visitados na árvore
 nodos = 0
 
@@ -47,7 +51,6 @@ def B_nossa(pos, atores):
     # remove os mais caros
     candidatos = candidatos[:n-len(atores)] 
     
-    print("candidatos: ", candidatos)
     # retorna o custo dos escolhidos + a soma dos mais baratos
     return result + sum(candidatos)
 
@@ -87,31 +90,26 @@ def viavel(pos, atores):
 
     # não representamos todos os grupos
     if len(representados.union(nao_representados)) != l:
-        print("Não representamos todos os grupos")
         return False
 
     # número de atores escolhidos e grupos restantes não cobrirá número de papeis
     if len(atores)+len(grupos)-pos < n:
-        print("Não suficiente para papeis")
         return False
 
     # escolhi mais que papeis disponíveis
     if len(atores) > n:
-        print("escolhemos atores demais")
         return False
 
     return True
 
 def elenca(pos=0, atores=[]):
-    global nodos, n, o
+    global nodos, n, o, cortes_otimalidade, cortes_viabilidade
     
-    print("\n RODADA", nodos+1)
     # Visitamos mais um nodo
     nodos += 1
 
     # Caso base 1: inviável
     if not viavel(pos, atores):
-        print("Não viável para", atores, " e ", pos+1)
         return
 
     # Caso base 2: se preenchemos o vetor de escolhidos e é viável
@@ -121,48 +119,71 @@ def elenca(pos=0, atores=[]):
             otimo['custo'] = custo_local
             otimo['melhores_atores'] = atores
         
-        print("otimo: ", otimo)
         return
     
     bound_atual = bound(pos+1, atores)
-    print("bound atual: ", bound_atual, "para ator: ", pos)
 
     bound_prox = bound(pos+1, atores+[pos])
-    print("bound proximo: ", bound_prox, "para ator: ", pos)
 
-    print("custo atual: ", otimo['custo'])
 
     if (f == 0):
         if (o == 0):
             if bound_prox < bound_atual:
                 if (viavel(pos+1, atores+[pos])):
                     elenca(pos+1, atores+[pos])
+                else:
+                    cortes_viabilidade += 1
+
                 if bound_atual < otimo["custo"]:
                     if (viavel(pos+1, atores)):
                         elenca(pos+1, atores)
+                    else:
+                        cortes_viabilidade += 1
+                else:
+                    cortes_otimalidade += 1
+
                     
             else:
                 if (viavel(pos+1, atores)):
                         elenca(pos+1, atores)
+                else:
+                    cortes_viabilidade += 1
+
                 if bound_prox < otimo["custo"]:
                     if (viavel(pos+1, atores+[pos])):
                         elenca(pos+1, atores+[pos])  
+                    else:
+                        cortes_viabilidade += 1
+
+                else:
+                    cortes_otimalidade += 1
+
         else:
             if (viavel(pos+1, atores)):
                     elenca(pos+1, atores)
+            else:
+                cortes_viabilidade += 1
+
             if (viavel(pos+1, atores+[pos])):
                     elenca(pos+1, atores+[pos])  
+            else:
+                cortes_viabilidade += 1
+
     else:
         if (o == 0):
             if bound_prox < bound_atual:
                 elenca(pos+1, atores+[pos])
                 if bound_atual < otimo["custo"]:
                     elenca(pos+1, atores)
+                else:
+                    cortes_otimalidade += 1
                     
             else:
                 elenca(pos+1, atores)
                 if bound_prox < otimo["custo"]:
                     elenca(pos+1, atores+[pos])  
+                else:
+                    cortes_otimalidade += 1
         else:
             elenca(pos+1, atores)
             elenca(pos+1, atores+[pos]) 
@@ -223,6 +244,8 @@ if __name__ == "__main__":
     else:
         print('Número de nós na árvore da solução:', nodos, file=sys.stderr)
         print('Tempo de execução:', tempo_total, file=sys.stderr)
+        print('Cortes por otimalidade: ', cortes_otimalidade)
+        print('Cortes por viabilidade: ', cortes_viabilidade)
         for ator in otimo['melhores_atores'][:-1]:
             print(ator+1, end=' ')
         print(otimo['melhores_atores'][-1]+1)
