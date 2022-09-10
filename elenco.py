@@ -80,29 +80,30 @@ def viavel(pos, atores):
     if (len(grupos) <= pos and len(atores) < n):
         return False
 
-    # Conjunto de grupos representados
-    representados = set()
-    for ator in atores:
-        for grupo in grupos[ator]:
-            representados.add(grupo)
+    if (f == 0):
+        # Conjunto de grupos representados
+        representados = set()
+        for ator in atores:
+            for grupo in grupos[ator]:
+                representados.add(grupo)
 
-    # Conjunto de grupos ainda não representados
-    nao_representados = set()
-    for ator in range(pos, len(grupos)):
-        for grupo in grupos[ator]:
-            nao_representados.add(grupo)
-    
-    # não representamos todos os grupos
-    if len(representados.union(nao_representados)) != l:
-        return False
+        # Conjunto de grupos ainda não representados
+        nao_representados = set()
+        for ator in range(pos, len(grupos)):
+            for grupo in grupos[ator]:
+                nao_representados.add(grupo)
+        
+        # não representamos todos os grupos
+        if len(representados.union(nao_representados)) != l:
+            return False
 
-    # número de atores escolhidos e grupos restantes não cobrirá número de papeis
-    if len(atores)+len(grupos)-pos < n and f == 0:
-        return False
+        # número de atores escolhidos e grupos restantes não cobrirá número de papeis
+        if len(atores)+len(grupos)-pos < n:
+            return False
 
-    # escolhi mais que papeis disponíveis
-    if len(atores) > n:
-        return False
+        # escolhi mais que papeis disponíveis
+        if len(atores) > n:
+            return False
 
     return True
 
@@ -118,7 +119,7 @@ def elenca(pos=0, atores=[]):
         return
 
     # Caso base 2: se preenchemos o vetor de escolhidos e é viável
-    if len(atores) == n: 
+    if pos == m: 
         custo_local = custo(atores)
         if (custo_local < otimo['custo']):
             otimo['custo'] = custo_local

@@ -93,7 +93,7 @@ def viavel(pos, atores):
             nao_representados.add(grupo)
     
     # não representamos todos os grupos
-    if len(representados.union(nao_representados)) != l:
+    if len(representados.union(nao_representados)) != l and f == 0:
         return False
 
     # número de atores escolhidos e grupos restantes não cobrirá número de papeis
@@ -101,7 +101,7 @@ def viavel(pos, atores):
         return False
 
     # escolhi mais que papeis disponíveis
-    if len(atores) > n:
+    if len(atores) > n and f == 0:
         return False
 
     return True
@@ -118,7 +118,7 @@ def elenca(pos=0, atores=[]):
         return
 
     # Caso base 2: se preenchemos o vetor de escolhidos e é viável
-    if len(atores) == n: 
+    if pos == m: 
         custo_local = custo(atores)
         if (custo_local < otimo['custo']):
             otimo['custo'] = custo_local
