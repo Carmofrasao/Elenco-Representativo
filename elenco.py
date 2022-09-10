@@ -47,6 +47,7 @@ def B_nossa(pos, atores):
     # remove os mais caros
     candidatos = candidatos[:n-len(atores)] 
     
+    print("candidatos: ", candidatos)
     # retorna o custo dos escolhidos + a soma dos mais baratos
     return result + sum(candidatos)
 
@@ -110,7 +111,7 @@ def elenca(pos=0, atores=[]):
 
     # Caso base 1: inviável
     if not viavel(pos, atores):
-        print("Não viável para", pos)
+        print("Não viável para", atores, " e ", pos+1)
         return
 
     # Caso base 2: se preenchemos o vetor de escolhidos e é viável
@@ -125,25 +126,46 @@ def elenca(pos=0, atores=[]):
     
     bound_atual = bound(pos+1, atores)
     print("bound atual: ", bound_atual, "para ator: ", pos)
+
     bound_prox = bound(pos+1, atores+[pos])
     print("bound proximo: ", bound_prox, "para ator: ", pos)
 
     print("custo atual: ", otimo['custo'])
-    
-    # nucna entra?????????????????????????????
-    if min(bound_prox, bound_atual) >= otimo["custo"]:
-        print("cortei")
-        return
 
-    if bound_prox < bound_atual:
-        elenca(pos+1, atores+[pos])
-        if bound_atual < otimo["custo"]:
-            elenca(pos+1, atores)
-            
+    if (f == 0):
+        if (o == 0):
+            if bound_prox < bound_atual:
+                if (viavel(pos+1, atores+[pos])):
+                    elenca(pos+1, atores+[pos])
+                if bound_atual < otimo["custo"]:
+                    if (viavel(pos+1, atores)):
+                        elenca(pos+1, atores)
+                    
+            else:
+                if (viavel(pos+1, atores)):
+                        elenca(pos+1, atores)
+                if bound_prox < otimo["custo"]:
+                    if (viavel(pos+1, atores+[pos])):
+                        elenca(pos+1, atores+[pos])  
+        else:
+            if (viavel(pos+1, atores)):
+                    elenca(pos+1, atores)
+            if (viavel(pos+1, atores+[pos])):
+                    elenca(pos+1, atores+[pos])  
     else:
-        elenca(pos+1, atores)
-        if bound_prox < otimo["custo"]:
-            elenca(pos+1, atores+[pos])   
+        if (o == 0):
+            if bound_prox < bound_atual:
+                elenca(pos+1, atores+[pos])
+                if bound_atual < otimo["custo"]:
+                    elenca(pos+1, atores)
+                    
+            else:
+                elenca(pos+1, atores)
+                if bound_prox < otimo["custo"]:
+                    elenca(pos+1, atores+[pos])  
+        else:
+            elenca(pos+1, atores)
+            elenca(pos+1, atores+[pos]) 
     
 
     
