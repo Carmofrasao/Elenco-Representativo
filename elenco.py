@@ -122,17 +122,18 @@ def elenca(pos=0, atores=[]):
             otimo['melhores_atores'] = atores
         return
     
-    # Bound atual
-    bound_atual = bound(pos+1, atores)
-
-    # Bound do próximo nodo
-    bound_prox = bound(pos+1, atores+[pos])
 
     # Se vamos cortar por viabilidade
     if (f == 0):
         
         # Se vamos cortar por otimalidade
         if (o == 0):
+            
+             # Bound atual
+            bound_atual = bound(pos+1, atores)
+
+            # Bound do próximo nodo
+            bound_prox = bound(pos+1, atores+[pos])
 
             # Se o bound do próximo for menor que o atual, pegamos o próximo
             if bound_prox < bound_atual:
@@ -190,6 +191,13 @@ def elenca(pos=0, atores=[]):
 
         # Se não vamos cortar por otimalidade
         if (o == 0):
+
+             # Bound atual
+            bound_atual = bound(pos+1, atores)
+
+            # Bound do próximo nodo
+            bound_prox = bound(pos+1, atores+[pos])
+            
             if bound_prox < bound_atual:
                 elenca(pos+1, atores+[pos])
                 if bound_atual < otimo["custo"]:
