@@ -1,24 +1,6 @@
 # Anderson Aparecido do Carmo Frasão (GRR20204069)
 # Richard Fernando Heise Ferreira (GRR20191053)
 
-CFLAGS  = -Wall -g
-CC = gcc 
-
-#-----------------------------------------------------------------------------#
-all : elenco
-
-run: elenco
-	./elenco < ./exemplos/teste1.txt
-
-elenco: elenco.o
-
-
-#-----------------------------------------------------------------------------#
-
-clean :
-	$(RM) *.o
-
-#-----------------------------------------------------------------------------#
-
-purge:
-	$(RM) elenco *.o
+all: # cria o executavel elenco
+	@cp elenco.py elenco
+	@chmod u+rx elenco
