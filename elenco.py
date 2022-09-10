@@ -77,6 +77,9 @@ def B_dada(pos, atores):
 def viavel(pos, atores):
     global grupos, n
 
+    if (len(grupos) <= pos and len(atores) < n):
+        return False
+
     # Conjunto de grupos representados
     representados = set()
     for ator in atores:
@@ -94,7 +97,7 @@ def viavel(pos, atores):
         return False
 
     # número de atores escolhidos e grupos restantes não cobrirá número de papeis
-    if len(atores)+len(grupos)-pos < n:
+    if len(atores)+len(grupos)-pos < n and f == 0:
         return False
 
     # escolhi mais que papeis disponíveis
