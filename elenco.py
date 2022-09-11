@@ -64,8 +64,17 @@ def B_dada(pos, atores):
     # Custo dos atores escolhidos
     result = custo(atores)
 
+    valores_n_escolhidos = valores.copy()
+    atores_aux = atores.copy()
+
+    for ator in atores_aux:
+        # Se esse ator ja foi escolhido, remove dos valores
+        valores_n_escolhidos.remove(valores_n_escolhidos[ator])
+        # E retira ele do vetor de atores
+        atores_aux.remove(ator)
+
     # indice do ator mais barato no vetor de atores disponiveis
-    index_min = valores.index(min(valores))
+    index_min = valores.index(min(valores_n_escolhidos))
 
     # Pega o ator mais barato, multiplica pelo numero de papeis que falta preecher
     # E soma ao valor total dos atores
