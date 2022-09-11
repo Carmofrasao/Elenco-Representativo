@@ -83,13 +83,13 @@ def B_dada(pos, atores):
     return result
 
 # Função que testa viabilidade
-def viavel(pos, atores):
+def viavel(pos, atores, primeiro):
     global grupos, n
 
     if (len(grupos) <= pos and len(atores) < n):
         return False
 
-    if (f == 0):
+    if (primeiro == 1 or f == 0):
         # Conjunto de grupos representados
         representados = set()
         for ator in atores:
@@ -113,18 +113,18 @@ def viavel(pos, atores):
         # escolhi mais que papeis disponíveis
         if len(atores) > n:
             return False
-
+            
     return True
 
 # Resolve melhor elenco
-def elenca(pos=0, atores=[]):
+def elenca(pos=0, atores=[], primeiro=1):
     global nodos, n, o, f, cortes_otimalidade, cortes_viabilidade
     
     # Visitamos mais um nodo
     nodos += 1
 
     # Caso base 1: inviável
-    if not viavel(pos, atores):
+    if not viavel(pos, atores, primeiro):
         return
 
     # Caso base 2: se preenchemos o vetor de escolhidos e é viável
@@ -143,26 +143,26 @@ def elenca(pos=0, atores=[]):
         if (o == 0):
             
              # Bound atual
-            bound_atual = bound(pos+1, atores)
+            bound_ignora = bound(pos+1, atores)
 
             # Bound do próximo nodo
-            bound_prox = bound(pos+1, atores+[pos])
+            bound_pega = bound(pos+1, atores+[pos])
 
             # Se o bound do próximo for menor que o atual, pegamos o próximo
-            if bound_prox < bound_atual:
+            if bound_pega < bound_ignora:
 
                 # Corte por viabilidade
-                if (viavel(pos+1, atores+[pos])):
-                    elenca(pos+1, atores+[pos])
+                if (viavel(pos+1, atores+[pos], 0)):
+                    elenca(pos+1, atores+[pos], 0)
                 else:
                     cortes_viabilidade += 1
 
                 # Corte de otimalidade
-                if bound_atual < otimo["custo"]:
+                if bound_ignora < otimo["custo"]:
 
                     # Corte por viabilidade
-                    if (viavel(pos+1, atores)):
-                        elenca(pos+1, atores)
+                    if (viavel(pos+1, atores, 0)):
+                        elenca(pos+1, atores, 0)
                     else:
                         cortes_viabilidade += 1
                 else:
@@ -170,14 +170,14 @@ def elenca(pos=0, atores=[]):
 
                     
             else:
-                if (viavel(pos+1, atores)):
-                        elenca(pos+1, atores)
+                if (viavel(pos+1, atores, 0)):
+                        elenca(pos+1, atores, 0)
                 else:
                     cortes_viabilidade += 1
 
-                if bound_prox < otimo["custo"]:
-                    if (viavel(pos+1, atores+[pos])):
-                        elenca(pos+1, atores+[pos])  
+                if bound_pega < otimo["custo"]:
+                    if (viavel(pos+1, atores+[pos], 0)):
+                        elenca(pos+1, atores+[pos], 0)  
                     else:
                         cortes_viabilidade += 1
 
@@ -188,14 +188,14 @@ def elenca(pos=0, atores=[]):
         else:
 
             # Corte por viabilidade
-            if (viavel(pos+1, atores)):
-                    elenca(pos+1, atores)
+            if (viavel(pos+1, atores, 0)):
+                    elenca(pos+1, atores, 0)
             else:
                 cortes_viabilidade += 1
 
             # Corte por viabilidade
-            if (viavel(pos+1, atores+[pos])):
-                    elenca(pos+1, atores+[pos])  
+            if (viavel(pos+1, atores+[pos], 0)):
+                    elenca(pos+1, atores+[pos], 0)  
             else:
                 cortes_viabilidade += 1
 
@@ -206,29 +206,29 @@ def elenca(pos=0, atores=[]):
         if (o == 0):
 
              # Bound atual
-            bound_atual = bound(pos+1, atores)
+            bound_ignora = bound(pos+1, atores)
 
             # Bound do próximo nodo
-            bound_prox = bound(pos+1, atores+[pos])
+            bound_pega = bound(pos+1, atores+[pos])
             
-            if bound_prox < bound_atual:
-                elenca(pos+1, atores+[pos])
-                if bound_atual < otimo["custo"]:
-                    elenca(pos+1, atores)
+            if bound_pega < bound_ignora:
+                elenca(pos+1, atores+[pos], 0)
+                if bound_ignora < otimo["custo"]:
+                    elenca(pos+1, atores, 0)
                 else:
                     cortes_otimalidade += 1
                     
             else:
-                elenca(pos+1, atores)
-                if bound_prox < otimo["custo"]:
-                    elenca(pos+1, atores+[pos])  
+                elenca(pos+1, atores, 0)
+                if bound_pega < otimo["custo"]:
+                    elenca(pos+1, atores+[pos]), 0  
                 else:
                     cortes_otimalidade += 1
         else:
 
             # Se não vamos cortar por otimalidade nem viabilidade
-            elenca(pos+1, atores)
-            elenca(pos+1, atores+[pos]) 
+            elenca(pos+1, atores, 0)
+            elenca(pos+1, atores+[pos], 0) 
     
 if __name__ == "__main__":
     f = o = a = v = 0
