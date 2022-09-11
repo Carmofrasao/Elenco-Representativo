@@ -1,5 +1,9 @@
 #!/usr/bin/python3
 
+# Autores: 
+# Anderson Aparecido do Carmo Frasão GRR20204069
+# Richard Fernando Heise Ferreira GRR20191053
+
 import sys
 import datetime as dt
 
@@ -64,21 +68,14 @@ def B_dada(pos, atores):
     # Custo dos atores escolhidos
     result = custo(atores)
 
-    valores_n_escolhidos = valores.copy()
-    atores_aux = atores.copy()
+    valores_n_escolhidos = valores.copy()[pos:]
 
-    for ator in atores_aux:
-        # Se esse ator ja foi escolhido, remove dos valores
-        valores_n_escolhidos.remove(valores_n_escolhidos[ator])
-        # E retira ele do vetor de atores
-        atores_aux.remove(ator)
-
-    # indice do ator mais barato no vetor de atores disponiveis
-    index_min = valores.index(min(valores_n_escolhidos))
-
-    # Pega o ator mais barato, multiplica pelo numero de papeis que falta preecher
-    # E soma ao valor total dos atores
-    result +=  (n - len(atores)) * valores[index_min]
+    if (len(valores_n_escolhidos)):
+        # indice do ator mais barato no vetor de atores disponiveis
+        index_min = valores.index(min(valores_n_escolhidos))
+        # Pega o ator mais barato, multiplica pelo numero de papeis que falta preecher
+        # E soma ao valor total dos atores
+        result +=  (n - len(atores)) * valores[index_min]
     
     return result
 
@@ -89,7 +86,7 @@ def viavel(pos, atores, primeiro):
     if (len(grupos) <= pos and len(atores) < n):
         return False
 
-    if (primeiro == 1 or f == 0):
+    if (f == 0 or primeiro == 1):
         # Conjunto de grupos representados
         representados = set()
         for ator in atores:
@@ -120,6 +117,8 @@ def viavel(pos, atores, primeiro):
 def elenca(pos=0, atores=[], primeiro=1):
     global nodos, n, o, f, cortes_otimalidade, cortes_viabilidade
     
+    if (v == 1):
+        print("elenca(", pos, ",", atores, ")")
     # Visitamos mais um nodo
     nodos += 1
 
@@ -127,7 +126,7 @@ def elenca(pos=0, atores=[], primeiro=1):
     if not viavel(pos, atores, primeiro):
         return
 
-    # Caso base 2: se preenchemos o vetor de escolhidos e é viável
+    # Caso base 2: verificamos todos os atores
     if pos == m: 
         custo_local = custo(atores)
         if (custo_local < otimo['custo']):
@@ -221,7 +220,7 @@ def elenca(pos=0, atores=[], primeiro=1):
             else:
                 elenca(pos+1, atores, 0)
                 if bound_pega < otimo["custo"]:
-                    elenca(pos+1, atores+[pos]), 0  
+                    elenca(pos+1, atores+[pos], 0)  
                 else:
                     cortes_otimalidade += 1
         else:
