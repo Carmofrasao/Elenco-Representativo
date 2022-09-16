@@ -7,6 +7,3 @@ Feito por Anderson Frasão e Richard Heise
 Objetivo
 
 Otimizar gasto de um elenco considerando os grupos representativos necessarios para preencher tal elenco. 
-
-Implementação
-
